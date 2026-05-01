@@ -1,6 +1,11 @@
-# build application
+# Etap 1: Budowanie aplikacji
 FROM eclipse-temurin:17-jdk-alpine AS build
 COPY . .
+
+# DODAJ TĘ LINIĘ: nadaje uprawnienia do wykonywania skryptu
+RUN chmod +x gradlew
+
+# Teraz budowanie zadziała
 RUN ./gradlew build -x test
 
 # run application
