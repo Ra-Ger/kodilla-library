@@ -4,7 +4,7 @@ import com.kodilla.kodillalibrary.domain.Reader;
 import com.kodilla.kodillalibrary.dto.ReaderDto;
 import com.kodilla.kodillalibrary.mapper.ReaderMapper;
 import com.kodilla.kodillalibrary.service.LibraryService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,15 +12,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/v1/readers")
 public class ReaderController {
 
-    @Autowired
-    private ReaderMapper mapper;
-    
-    @Autowired
-    private LibraryService libraryService;
+    private final ReaderMapper mapper;
+
+    private final LibraryService libraryService;
 
     @GetMapping
     public List<ReaderDto> getReaders() {

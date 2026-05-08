@@ -4,25 +4,24 @@ import com.kodilla.kodillalibrary.domain.Title;
 import com.kodilla.kodillalibrary.dto.TitleDto;
 import com.kodilla.kodillalibrary.mapper.TitleMapper;
 import com.kodilla.kodillalibrary.service.LibraryService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/v1/titles")
 public class TitleController {
 
-    @Autowired
-    private TitleMapper mapper;
+    private final TitleMapper mapper;
 
-    @Autowired
-    private LibraryService libraryService;
+    private final LibraryService libraryService;
 
     @GetMapping(value = "/{titleId}")
-    public ResponseEntity<TitleDto> getTitle(@PathVariable("titleId") Long titleId) throws Exception {
+    public ResponseEntity<TitleDto> getTitle(@PathVariable("titleId") Long titleId) {
        return ResponseEntity.ok(mapper.mapToTitleDto(libraryService.getTitleById(titleId)));
     }
 
@@ -45,7 +44,7 @@ public class TitleController {
     }
 
     @GetMapping("/count")
-    public ResponseEntity<Long> returnCopiesCount(@RequestParam Long titleId) throws Exception {
+    public ResponseEntity<Long> returnCopiesCount(@RequestParam Long titleId) {
         long count = libraryService.availableCopiesCount(titleId);
         return ResponseEntity.ok(count);
     }

@@ -6,7 +6,7 @@ import com.kodilla.kodillalibrary.domain.Title;
 import com.kodilla.kodillalibrary.dto.CopyDto;
 import com.kodilla.kodillalibrary.mapper.CopyMapper;
 import com.kodilla.kodillalibrary.service.LibraryService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,15 +14,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/v1/copies")
 public class CopyController {
 
-    @Autowired
-    private CopyMapper mapper;
+    private final CopyMapper mapper;
 
-    @Autowired
-    LibraryService libraryService;
+    private final LibraryService libraryService;
 
     @GetMapping
     public List<CopyDto> getCopies() {
@@ -30,7 +29,7 @@ public class CopyController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CopyDto> addCopy(@RequestBody CopyDto copyDto) throws Exception {
+    public ResponseEntity<CopyDto> addCopy(@RequestBody CopyDto copyDto) {
         Title title = libraryService.getTitleById(copyDto.getTitleId());
         Copy copy = mapper.mapToCopy(copyDto, title);
         Copy saved = libraryService.saveCopy(copy);
@@ -39,7 +38,7 @@ public class CopyController {
     }
 
     @PostMapping("status")
-    public ResponseEntity<List<CopyDto>> updateCopyStatus(@RequestParam long copyId, @RequestParam CopyStatus copyStatus) throws Exception {
+    public ResponseEntity<List<CopyDto>> updateCopyStatus(@RequestParam long copyId, @RequestParam CopyStatus copyStatus) {
         libraryService.updateCopyStatus(copyId,copyStatus);
         return ResponseEntity.ok().build();
     }
